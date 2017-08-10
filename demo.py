@@ -39,7 +39,7 @@ class LoadBalancer(object):
     flow_table = dict()
     sockets = list()
 
-    def __init__(self, ip, port, algorithm='random'):
+    def __init__(self, ip, port, algorithm='round robin'):
         self.ip = ip
         self.port = port
         self.algorithm = algorithm
@@ -56,8 +56,7 @@ class LoadBalancer(object):
 
     def start(self):
         while True:
-            read_list, write_list, exception_list = \
-                select.select(self.sockets, [], [])
+            read_list, write_list, exception_list = select.select(self.sockets, [], [])
             for sock in read_list:
                 # new connection
                 if sock == self.cs_socket:
